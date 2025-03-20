@@ -27,13 +27,25 @@ class UserController extends Controller
         // Validate dữ liệu nhập vào
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
+            ],
             'password' => 'required|string|min:6',
             'role' => 'required|string|in:admin,user',
+        ], [
+            'email.regex' => 'The email format is invalid. Please use a valid email like test@gmail.com.'
         ]);
     
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 400);
         }
 
         // Băm mật khẩu trước khi lưu
@@ -47,7 +59,11 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return response()->json($user, 201);
+        return response()->json([
+            'status' => true,
+            'message' => 'Added New User Successfully',
+            'user' => $user
+        ], 201);
 
         // $user = User::addUser($request->name, $request->email, $request->role, $request->password);
         // return response()->json($user, 201);

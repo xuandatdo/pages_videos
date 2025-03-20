@@ -74,7 +74,7 @@
                   </thead>
                   <tbody v-if="this.filteredLectures.length > 0">
                     <tr v-for="(data, index) in this.filteredLectures" :key="index">
-                      <td>{{ index + 1 }}</td>
+                      <td>{{ data.id }}</td>
                       <td>{{ data.title }}</td>
                       <td>{{ data.description }}</td>
                       <td>{{ data.video_url }}</td>
@@ -204,7 +204,7 @@ export default {
     },
     deleteLecture(lectureId) {
       if (confirm('Are you sure you want to delete this lecture?')) {
-        axios.delete(`${import.meta.env.VITE_API_URL}/lectures/${lectureId}/delete`).then(res => {
+        axios.delete(`${import.meta.env.VITE_API_URL}/api/lectures/${lectureId}/delete`).then(res => {
           alert(res.data.message);
           this.getLectures();
         }).catch(error => {
@@ -581,5 +581,18 @@ header {
 .search-icon:hover {
   color: #333;
 }
-  
+
+.card-body {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Adjust as needed */
+}
+
 </style>

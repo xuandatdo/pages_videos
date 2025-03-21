@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -75,7 +76,18 @@ class UserController extends Controller
         // Validate dữ liệu nhập vào
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'email' => [
+            'required',
+            'string',
+            'email',
+            'max:255',
+            Rule::unique('users', 'email')->ignore($id),
+            function ($attribute, $value, $fail) {
+                if (!str_ends_with($value, '@gmail.com')) {
+                    $fail('The email must be a Gmail address (@gmail.com).');
+                }
+            },
+        ],
             'role' => 'required|string|in:admin,user',
             'password' => 'nullable|min:6', // Cho phép cập nhật mật khẩu, nhưng không bắt buộc
         ]);

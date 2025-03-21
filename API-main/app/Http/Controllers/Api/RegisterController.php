@@ -15,7 +15,16 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email',
+                function ($attribute, $value, $fail) {
+                    if (!str_ends_with($value, '@gmail.com')) {
+                        $fail('The email must be a Gmail address (@gmail.com).');
+                    }
+                },
+            ],
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required', // Đảm bảo Laravel nhận đúng giá trị
         ]);

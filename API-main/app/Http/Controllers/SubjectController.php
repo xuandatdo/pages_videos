@@ -27,13 +27,12 @@ class SubjectController extends Controller
     // Store a new subject
     public function store(Request $request)
     { 
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-
+        
         $imagePath = null;
         if ($request->hasFile('thumbnail')) { 
             $imagePath = $request->file('thumbnail')->store('thumbnails', 'public');

@@ -1,102 +1,104 @@
 <template>
-  <div class="admin-home">
-    <aside :class="['sidebar', { collapsed: isCollapsed }]">
-      <router-link to="/admin" class="logo-link">
-        <img src="/logo_plt.png" alt="Logo" class="logo" />
-      </router-link>
-
-      <div class="logo-container">
-        <h2 v-if="!isCollapsed">PLT SOLUTION ADMIN</h2>
-      </div>
-      <div class="toggle-container" @click="toggleSidebar">
-        <font-awesome-icon :icon="['fas', isCollapsed ? 'chevron-right' : 'chevron-left']" class="toggle-btn" />
-      </div>
-      <ul>
-        <li>
-          <router-link to="/lectures">
-            <font-awesome-icon :icon="['fas', 'video']" />
-            <span v-if="!isCollapsed">Quản lý Video</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/subjectmanager">
-            <font-awesome-icon :icon="['fas', 'book']" />
-            <span v-if="!isCollapsed">Quản lý Môn Học</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/usermanager">
-            <font-awesome-icon :icon="['fas', 'users']" />
-            <span v-if="!isCollapsed">Quản lý Người Dùng</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/contactmanager">
-            <font-awesome-icon :icon="['fas', 'envelope']" />
-            <span v-if="!isCollapsed">Quản lý liên hệ</span>
-          </router-link>
-        </li>
-        <li @click="logout">
-          <a href="#">
-            <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
-            <span v-if="!isCollapsed">Đăng Xuất</span>
-          </a>
-        </li>
-      </ul>
-    </aside>
-
-    <div class="main-container">
-      <header class="header">
-        <div class="search-box">
-          <input type="text" placeholder="Tìm kiếm..." v-model="searchQuery" />
-          <font-awesome-icon :icon="['fas', 'search']" class="search-icon" />
+    <div class="admin-home">
+        <aside :class="['sidebar', { collapsed: isCollapsed }]">
+        <router-link to="/admin" class="logo-link">
+          <img src="/logo_plt.png" alt="Logo" class="logo" />
+        </router-link>
+        
+        <div class="logo-container">
+          <h2 v-if="!isCollapsed">PLT SOLUTION ADMIN</h2>
         </div>
-      </header>
-      <!-- Main content -->
-      <main class="content">
-        <div class="subject-manager">
-          <h1>Quản lý Môn Học</h1>
-          <button @click="showAddSubjectModal = true" class="btn btn-primary">Thêm Môn Học</button>
-
-          <table class="subject-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tên Môn Học</th>
-                <th>Mô Tả</th>
-                <th>Hình Ảnh</th>
-                <th>Hành Động</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="subject in filteredSubjects" :key="subject.id">
-                <td>{{ subject.id }}</td>
-                <td>{{ subject.name }}</td>
-                <td>{{ subject.description }}</td>
-                <td>
-                  {{ console.log("Subject:", subject) }}
-                  <img v-if="subject.thumbnail" :src="getFullImageUrl(subject.thumbnail)" alt="Thumbnail"
-                    class="thumbnail-img" />
-
-                  <span v-else>Không có ảnh</span>
-                </td>
-                <td>
-                  <button @click="editSubject(subject)" class="btn btn-warning">Sửa</button>
-                  <button @click="deleteSubject(subject.id)" class="btn btn-danger">Xóa</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div v-if="showAddSubjectModal" class="modal">
-            <div class="modal-content">
-              <h2>Thêm Môn Học</h2>
-              <button @click="showAddSubjectModal = false" class="close-btn">&times;</button>
-              <label>Tên Môn Học:</label>
-              <input v-model="newSubject.name" type="text" />
-              <label for="description">Mô Tả:</label>
-              <textarea id="description" v-model="newSubject.description" class="form-control" rows="5"
-                style="width: 100%;"></textarea>
+        <div class="toggle-container" @click="toggleSidebar">
+          <font-awesome-icon :icon="['fas', isCollapsed ? 'chevron-right' : 'chevron-left']" class="toggle-btn" />
+        </div>
+        <ul>
+          <li>
+            <router-link to="/lectures">
+              <font-awesome-icon :icon="['fas', 'video']" />
+              <span v-if="!isCollapsed">Quản lý Video</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/subjectmanager">
+              <font-awesome-icon :icon="['fas', 'book']" />
+              <span v-if="!isCollapsed">Quản lý Môn Học</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/usermanager">
+              <font-awesome-icon :icon="['fas', 'users']" />
+              <span v-if="!isCollapsed">Quản lý Người Dùng</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/contactmanager">
+              <font-awesome-icon :icon="['fas', 'envelope']" />
+              <span v-if="!isCollapsed">Quản lý liên hệ</span>
+            </router-link>
+          </li>
+          <li @click="logout">
+            <a href="#">
+              <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+              <span v-if="!isCollapsed">Đăng Xuất</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      
+      <div class="main-container">
+        <header class="header">
+          <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm..." v-model="searchQuery" />
+            <font-awesome-icon :icon="['fas', 'search']" class="search-icon" />
+          </div>
+        </header>
+        <!-- Main content -->
+        <main class="content">
+          <div class="subject-manager">
+            <h1>Quản lý Môn Học</h1>
+            <button @click="showAddSubjectModal = true" class="btn btn-primary">Thêm Môn Học</button>
+            <div><span>YOU MUST FILL ALL THE FIELD TO ADD THE NEW COURSE</span></div>
+            <div class="card-body">
+              <table class="subject-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên Môn Học</th>
+                  <th>Mô Tả</th>
+                  <th>Hình Ảnh</th>
+                  <th>Hành Động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="subject in filteredSubjects" :key="subject.id">
+                  <td>{{ subject.id }}</td>
+                  <td>{{ subject.name }}</td>
+                  <td>{{ subject.description }}</td>
+                  <td>
+                    {{ console.log("Subject:", subject) }}
+                    <img v-if="subject.thumbnail" :src="getFullImageUrl(subject.thumbnail)" alt="Thumbnail" class="thumbnail-img" />
+                    
+                    <span v-else>Không có ảnh</span>
+                  </td>
+                  <td>
+                    <button @click="editSubject(subject)" class="btn btn-warning">Sửa</button>
+                    <button @click="deleteSubject(subject.id)" class="btn btn-danger">Xóa</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            
+            
+            <div v-if="showAddSubjectModal" class="modal">
+                <div class="modal-content">
+                    <h2>Thêm Môn Học</h2>
+                    <button @click="showAddSubjectModal = false" class="close-btn">&times;</button>
+                    <label>Tên Môn Học:</label>
+                    <input v-model="newSubject.name" type="text" />
+                    <label for="description">Mô Tả:</label>
+                    <textarea id="description" v-model="newSubject.description" 
+                    class="form-control" rows="5" style="width: 100%;"></textarea>
 
               <input type="file" @change="handleThumbnailUpload" accept="image/*" />
               <div v-if="newSubject.thumbnailPreview">
@@ -260,7 +262,7 @@ export default {
         this.filteredSubjects = [...this.subjects];
 
         alert("Thêm môn học thành công!"); // Hiển thị thông báo
-        this.newSubject = { name: '', description: '', thumbnail: null, thumbnailPreview: null }; // Reset form
+        this.newSubject = { name: '', description: '', thumbnail: "", thumbnailPreview: null }; // Reset form
         this.showAddSubjectModal = false;
         this.fetchSubjects(); // Cập nhật danh sách môn học
       } catch (error) {
@@ -290,11 +292,10 @@ export default {
         const formData = new FormData();
         formData.append('name', this.newSubject.name);
         formData.append('description', this.newSubject.description);
-
-        if (this.newSubject.thumbnail) {
+        if (this.newSubject.thumbnail instanceof File) {
           formData.append('thumbnail', this.newSubject.thumbnail);
         }
-
+        alert("Cập nhật thành công!")
         await axios.post(`${import.meta.env.VITE_API_URL}/api/subjects/${this.newSubject.id}?_method=PUT`, formData, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -819,4 +820,17 @@ export default {
   font-size: 20px;
   cursor: pointer;
 }
-</style>
+.card-body {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Adjust as needed */
+}
+  </style>
+  

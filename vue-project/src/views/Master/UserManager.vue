@@ -57,34 +57,35 @@
                 <div class="user-manager">
                     <h1>Quản lý Người Dùng</h1>
                     <button @click="openAddUserModal" class="btn btn-primary">Thêm Người Dùng</button>
+                    <div class="card-body">
+                      <table class="user-table">
+                        <thead>
+                            <tr>
+                            <th>ID</th>
+                            <th>Tên</th>
+                            <th>Email</th>
+                            <th>Vai Trò</th>
+                            <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="user in (showAllUsers ? filteredUsers : filteredUsers.slice(0, 6))" :key="user.id">
+                            <td>{{ user.id }}</td>
+                            <td >{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td> <span>{{ user.role }}</span> </td>
+                            <td>
+                                <button @click="editUser(user)" class="btn btn-warning">Sửa</button>
+                                <button @click="deleteUser(user.id)" class="btn btn-danger">Xóa</button>
+                            </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
                     
-                    <table class="user-table">
-                    <thead>
-                        <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Email</th>
-                        <th>Vai Trò</th>
-                        <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in filteredUsers" :key="user.id">
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>
-                                <span>{{ user.role }}</span>
-                        </td>
-                        
-                        <td>
-                            <button @click="editUser(user)" class="btn btn-warning">Sửa</button>
-                            <button @click="deleteUser(user.id)" class="btn btn-danger">Xóa</button>
-                        </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                    
+                    <button v-if="filteredUsers.length > 6" @click="showAllUsers = !showAllUsers" class="btn btn-primary">
+                      {{ showAllUsers ? "Ẩn bớt" : "Xem thêm" }}
+                    </button>
                     <div v-if="showAddUserModal" class="modal">
                     <div class="modal-content">
                         <h2>Thêm Người Dùng</h2>
@@ -161,6 +162,8 @@
         users: [],
         filteredUsers: [],
         showAddUserModal: false,
+        visibleUsers: 6,
+        showAllUsers: false,
         newUser: {
             name: '',
             email: '',
@@ -180,6 +183,9 @@
               user.email.toLowerCase().includes(query) ||
               user.role.toLowerCase().includes(query)
           );
+      },
+      displayedUsers() {
+        return this.showAllUsers ? this.filteredUsers : this.filteredUsers.slice(0, 6);
       }
   },
     mounted() {
@@ -215,6 +221,7 @@
                 await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, this.newUser);
                 this.fetchUsers();
                 this.showAddUserModal = false;
+                alert("Thêm người dùng thành công!")
             } catch (error) {
                 console.error("Lỗi khi thêm người dùng:", error.response?.data || error.message);
                 alert("Có lỗi xảy ra khi thêm người dùng!");
@@ -239,6 +246,7 @@
                 await axios.put(`${import.meta.env.VITE_API_URL}/api/users/${this.newUser.id}`, this.newUser);
                 this.fetchUsers();
                 this.showAddUserModal = false;
+                alert("Cập nhật người dùng thành công!");
             } catch (error) {
                 console.error("Lỗi khi cập nhật người dùng:", error.response?.data || error.message);
                 alert("Có lỗi xảy ra khi cập nhật người dùng!");
@@ -271,6 +279,9 @@
         openAddUserModal() {
             this.newUser = { name: '', email: '', password: '', role: 'user' };
             this.showAddUserModal = true;
+        },
+        showMoreUsers() {
+          this.visibleUsers += 6;
         }
     }
   };
@@ -637,6 +648,18 @@
 
 .modal-content .h2 {
   font-size: 16px;
+}
+.card-body {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Adjust as needed */
 }
   </style>
   

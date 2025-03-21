@@ -63,7 +63,7 @@
                     </div>
                     <div class="welcome-description">
                         <p>Explore our wide range of video courses and enhance your skills with PLT Solutions.</p>
-                        <router-link to="/lectures" class="btn btn-primary">Explore Courses</router-link>
+                        <router-link to="/courselist" class="btn btn-primary">Explore Courses</router-link>
                     </div>
                 </div>
           </main>

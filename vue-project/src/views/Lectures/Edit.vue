@@ -28,8 +28,9 @@
                     <label for="">Category</label>
                     <input type="text" v-model="model.category" class="form-control" />
                 </div>
-                <div class="mb-3">
-                    <button type="button" @click="updateLecture" class="btn btn-primary">Update</button>
+                <div class="mb-3 d-flex justify-content-between">
+                    <button type="button" @click="updateLecture" class="btn btn-primary ">Update</button>
+                    <button type="button" @click="backLecture" class="btn btn-primary ">Back</button>
                 </div>
             </div>
         </div>
@@ -77,12 +78,14 @@ export default {
         },
         updateLecture(){
 
+            
             var mythis = this;
 
             axios.put(`${import.meta.env.VITE_API_URL}/api/lectures/${this.lectureId}/edit`, this.model).then(res => {
                 console.log(res);
                 alert(res.data.message);
                 this.errorList = '';
+                this.$router.go(-1); // trở về trang trước sau khi cập nhật
                 
             }).catch(function (error){
                 if (error.response) {
@@ -93,6 +96,7 @@ export default {
                     if(error.response.status == 404){ 
                         alert(error.response.data.message);
                     }
+                    
                     //console.log(error.response.data);
                     //console.log(error.response.status);
                     //console.log(error.response.headers);
@@ -104,6 +108,10 @@ export default {
                     console.log('Error', error.message);
                 }
             });
+            
+        },
+        backLecture(){
+            this.$router.go(-1);
         }
     }
 }

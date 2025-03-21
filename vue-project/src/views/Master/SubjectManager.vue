@@ -262,7 +262,7 @@ export default {
         this.filteredSubjects = [...this.subjects];
 
         alert("Thêm môn học thành công!"); // Hiển thị thông báo
-        this.newSubject = { name: '', description: '', thumbnail: "", thumbnailPreview: null }; // Reset form
+        this.newSubject = { name: '', description: '', thumbnail: null, thumbnailPreview: null }; // Reset form
         this.showAddSubjectModal = false;
         this.fetchSubjects(); // Cập nhật danh sách môn học
       } catch (error) {
@@ -774,8 +774,8 @@ export default {
 }
 
 .thumbnail-img {
-  width: 80px;
-  height: 100px;
+  width: 200px;
+  height: auto;
   object-fit: cover;
   border-radius: 5px;
 }

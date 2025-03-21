@@ -43,7 +43,7 @@ export default {
     data() {
         return {
             errorList: '',
-            model:{
+            model: {
                 title: '',
                 description: '',
                 video_url: '',
@@ -52,7 +52,7 @@ export default {
         }
     },
     methods: {
-        saveLecture(){
+        saveLecture() {
 
             var mythis = this;
 
@@ -68,21 +68,22 @@ export default {
                 }
 
                 this.errorList = '';
-                
-            }).catch(function (error){
+                window.location.reload(); //reload page when add video
+
+            }).catch(function (error) {
                 if (error.response) {
 
-                    if(error.response.status == 422){
+                    if (error.response.status == 422) {
                         mythis.errorList = error.response.data.errors;
                     }
 
                     //console.log(error.response.data);
                     //console.log(error.response.status);
                     //console.log(error.response.headers);
-                } 
+                }
                 else if (error.request) {
                     console.log(error.request);
-                } 
+                }
                 else {
                     console.log('Error', error.message);
                 }

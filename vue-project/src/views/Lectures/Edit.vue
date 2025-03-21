@@ -28,9 +28,9 @@
                     <label for="">Category</label>
                     <input type="text" v-model="model.category" class="form-control" />
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
+                <div class="mb-3 d-flex">
                     <button type="button" @click="updateLecture" class="btn btn-primary ">Update</button>
-                    <button type="button" @click="backLecture" class="btn btn-primary ">Back</button>
+                    <button type="button" @click="backLecture" class="btn btn-secondary mx-2 ">Back</button>
                 </div>
             </div>
         </div>

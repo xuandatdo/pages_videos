@@ -22,7 +22,7 @@ class LectureController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required | string | max:255',
             'description' => 'required',
-            'video_url' => 'required',
+            'video_url' => 'required | url',
             'category' => 'required | string | max:255',
         ]);
         if($validator->fails()){
@@ -58,7 +58,7 @@ class LectureController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required | string | max:255',
             'description' => 'required',
-            'video_url' => 'required',
+            'video_url' => 'required | url',
             'category' => 'required | string | max:255',
         ]);
         if($validator->fails()){
